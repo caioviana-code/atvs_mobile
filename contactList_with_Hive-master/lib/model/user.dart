@@ -11,4 +11,6 @@ class UserModel extends HiveObject {
   late String user_name;
   @HiveField(2) // indice do atributo
   late String email;
+  @HiveField(3) // indice do atributo
+  late String number;
 }

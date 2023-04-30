@@ -1,3 +1,4 @@
+import 'package:contact_crud_hive/edit_contact.dart';
 import 'package:flutter/material.dart';
 
 import 'model/user.dart';
@@ -31,7 +32,8 @@ class ContactListView extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            subtitle: Text(users[index].user_name),
+            subtitle: Text(users[index].user_name + ' - ' + users[index].number),
+            
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -40,6 +42,10 @@ class ContactListView extends StatelessWidget {
                     onPressed: () {
                       onEditContact!(users[index]);
                       deleteUser(users[index]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EditContact()),
+                      );
                     },
                     icon: const Icon(
                       Icons.edit,
@@ -51,7 +57,34 @@ class ContactListView extends StatelessWidget {
                     ),
                   ),
                   TextButton.icon(
-                    onPressed: () => deleteUser(users[index]),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Deseja exluir esse contato?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cancelar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Confirmar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(true);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ).then((value) {
+                        if (value != null && value) {
+                          deleteUser(users[index]);
+                        } 
+                      });
+                    },
                     icon: const Icon(
                       Icons.delete,
                       color: Colors.red,

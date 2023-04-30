@@ -1,37 +1,24 @@
-import 'package:contact_crud_hive/common/box_user.dart';
+import 'package:contact_crud_hive/form_contact_fielder.dart';
+import 'package:contact_crud_hive/home_contact.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 
-
-import 'contact_listview.dart';
-import 'form_contact_fielder.dart';
+import 'common/box_user.dart';
 import 'model/user.dart';
 
-class HomeContact extends StatefulWidget {
-  const HomeContact({super.key});
-
+class EditContact extends StatefulWidget {
+  const EditContact({super.key});
+  
   @override
-  State<HomeContact> createState() => _HomeContactState();
+  State<EditContact> createState() => _EditContactState();
 }
 
-class _HomeContactState extends State<HomeContact> {
+class _EditContactState extends State<EditContact> {
   final _formKey = GlobalKey<FormState>();
 
   final idUserControl = TextEditingController();
   final nameUserControl = TextEditingController();
   final numberUserControl =  TextEditingController();
   final emailUserControl = TextEditingController();
-
-  @override
-  void dispose() {
-    idUserControl.dispose();
-    nameUserControl.dispose();
-    numberUserControl.dispose();
-    emailUserControl.dispose();
-    Hive.close(); // fechar as boxes
-    super.dispose();
-  }
 
   Future<void> addUser(
       String id, String name, String email, String number) async {
@@ -44,35 +31,20 @@ class _HomeContactState extends State<HomeContact> {
         ..email = email
         ..number = number;
 
-      // pega a caixa aberta
+     // pega a caixa aberta
       final box = UserBox.getUsers();
-      box.add(user).then((value) => _clearTextControllers());
+      box.add(user);
     }
-  }
-
-  Future<void> editUser(UserModel user) async {
-    idUserControl.text = user.user_id;
-    nameUserControl.text = user.user_name;
-    numberUserControl.text = user.number;
-    emailUserControl.text = user.email;
-  }
-
-  void _clearTextControllers() {
-    idUserControl.clear();
-    nameUserControl.clear();
-    numberUserControl.clear();
-    emailUserControl.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-  
-
+    
     return Form(
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Contatos'),
+          title: const Text('Editar Contato'),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
@@ -119,44 +91,23 @@ class _HomeContactState extends State<HomeContact> {
                             emailUserControl.text,
                             numberUserControl.text,
                           ),
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => HomeContact()),
+                          )
                         },
-                        child: const Text('Adicionar'),
+                        child: const Text('Atualizar'),
                       ),
                     ),
                     const SizedBox(width: 20),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _clearTextControllers,
-                        child: const Text('Limpar Campos'),
-                      ),
-                    ),
                   ],
                 ),
-              ), 
-              const SizedBox(height: 20),
-              ValueListenableBuilder(
-                valueListenable: UserBox.getUsers().listenable(),
-                builder: (BuildContext context, Box userBox, Widget? child) {
-                  final users = userBox.values.toList().cast<UserModel>();
-                  if (users.isEmpty) {
-                    return Center(
-                      child: const Text(
-                        'No Users Found',
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    );
-                  } else {
-                    return ContactListView(
-                      users: users,
-                      onEditContact: editUser,
-                    );
-                  }
-                },
-              ),         //ContactListView(users: users)
+              ),
             ],
           ),
         ),
       ),
     );
+
   }
 }

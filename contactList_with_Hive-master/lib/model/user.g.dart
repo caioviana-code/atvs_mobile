@@ -19,7 +19,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     return UserModel()
       ..user_id = fields[0] as String
       ..user_name = fields[1] as String
-      ..email = fields[2] as String;
+      ..email = fields[2] as String
+      ..number = fields[3] as String;
   }
 
   @override
@@ -31,7 +32,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(1)
       ..write(obj.user_name)
       ..writeByte(2)
-      ..write(obj.email);
+      ..write(obj.email)
+      ..writeByte(3)
+      ..write(obj.number);
   }
 
   @override
