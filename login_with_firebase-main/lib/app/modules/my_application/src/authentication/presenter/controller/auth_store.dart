@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:login_with_firebase/app/modules/my_application/src/authentication/domain/use_cases_interfaces/auth_signup_user_case_contract.dart';
+import 'package:login_with_firebase/app/modules/my_application/src/authentication/presenter/cache_interfaces/auth_local_cache_contract.dart';
 
 import '../../domain/use_cases_interfaces/auth_signin_user_case_contract.dart';
 import '../../domain/use_cases_interfaces/auth_signout_user_case_contract.dart';
-import '../../domain/use_cases_interfaces/auth_signup_user_case_contract.dart';
 import '../../domain/user_credencial_entity.dart';
-import '../cache_interfaces/auth_local_cache_contract.dart';
 
 class AuthStore extends Store<UserCredentialApp?> {
   late final IAuthSignInUseCase _userSignIn;
@@ -25,6 +27,22 @@ class AuthStore extends Store<UserCredentialApp?> {
     _userSignUp = userSignUp;
     _localCache = localCache;
     _userLocalCache();
+  } 
+
+   String? getCurrentUserId() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      return currentUser.uid;
+    }
+    return null;
+  }
+
+  void checkCurrentUser() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      // Usuário logado, redirecionar para a página inicial
+      Modular.to.navigate('/home-page');
+    }
   }
 
   bool get isAuth => _isAuth;

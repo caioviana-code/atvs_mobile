@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:login_with_firebase/app/modules/my_application/src/common/errors/errors_classes.dart';
+import 'package:login_with_firebase/app/modules/my_application/src/common/errors/errors_messagens.dart';
+import '../common/messages/messages_app.dart';
 
 import '../authentication/domain/user_credencial_entity.dart';
 import '../authentication/presenter/controller/auth_store.dart';
-import '../common/errors/errors_messagens.dart';
-import '../common/messages/messages_app.dart';
 import '../components/form_field_login.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -28,7 +29,7 @@ class SignUpPage extends StatelessWidget {
           Modular.to.pop();
         },
         label: const Text('Voltar'),
-        //backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 0, 85, 255),
         icon: const Icon(Icons.arrow_back_ios_new),
       ),
       body: Form(
@@ -46,10 +47,11 @@ class SignUpPage extends StatelessWidget {
                     Icon(
                       Icons.lock_person_rounded,
                       size: size.height * 0.2,
+                      color: Color.fromARGB(255, 0, 85, 255),
                     ),
                     SizedBox(height: size.height * 0.008),
                     const Text(
-                      'My App Login - Sign Up',
+                      'Tool Track',
                       style: TextStyle(fontSize: 24),
                     ),
                     SizedBox(height: size.height * 0.04),
@@ -64,6 +66,7 @@ class SignUpPage extends StatelessWidget {
                       hintName: 'Nome do Usuário',
                       icon: Icons.person_2_outlined,
                       controller: _userNameController,
+                      
                     ),
                     SizedBox(height: size.height * 0.01),
                     FormFieldLogin(
@@ -105,9 +108,9 @@ class SignUpPage extends StatelessWidget {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                              //shape: const StadiumBorder(),
-                              //backgroundColor: Colors.black,
-                              ),
+                            //shape: const StadiumBorder(),
+                            backgroundColor: const Color.fromARGB(255, 0, 85, 255),
+                          ),
                           child: const Text(
                             'Entrar',
                             style: TextStyle(fontSize: 20),
